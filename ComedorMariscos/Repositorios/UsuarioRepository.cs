@@ -27,13 +27,13 @@ namespace ComedorMariscos.Repositorios
             return usuario;
         }
 
-        public async Task<List<UsuarioListadoDto>> GetAllUsuariosAsync()
+        public async Task<List<UsuarioListadoDTO>> GetAllUsuariosAsync()
         {
             var usuarios = await _context.Usuarios
                 .Include(u => u.Rol)
                 .ToListAsync();
 
-            return usuarios.Select(u => new UsuarioListadoDto
+            return usuarios.Select(u => new UsuarioListadoDTO
             {
                 Id = u.Id,
                 Nombre = u.Nombre,

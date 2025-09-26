@@ -7,6 +7,6 @@ namespace ComedorMariscos.Interfaces
     {
         Task<Usuario?> GetByEmailAsync(string email);
         Task<Usuario> AddAsync(Usuario usuario);
-        Task<List<UsuarioListadoDto>> GetAllUsuariosAsync();
+        Task<List<UsuarioListadoDTO>> GetAllUsuariosAsync();
     }
 }

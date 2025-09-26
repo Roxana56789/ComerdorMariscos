@@ -1,7 +1,7 @@
 ﻿namespace ComedorMariscos.DTOs.UsuarioDTOs
 {
     {
-    public class UsuarioListadoDto
+    public class UsuarioListadoDTO
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = null!;
