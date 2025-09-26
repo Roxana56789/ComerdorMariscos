@@ -1,6 +1,8 @@
 ﻿namespace ComedorMariscos.DTOs.UsuarioDTOs
 {
-    public class UsuarioLoginDTO
+    public class UsuarioLoginDto
     {
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
     }
 }
