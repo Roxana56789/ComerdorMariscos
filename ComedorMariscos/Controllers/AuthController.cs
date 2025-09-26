@@ -1,12 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthApi.DTOs.UsuarioDTOs;
+using AuthApi.Interfaces;
+using ComedorMariscos.DTOs.UsuarioDTOs;
+using ComedorMariscos.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
-namespace ComedorMariscos.Controllers
+namespace AuthApi.Controllers
 {
-    public class AuthController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
         {
-            return View();
+            _authService = authService;
+        }
+
+        [HttpPost("registrar")]
+        public async Task<IActionResult> Registrar([FromBody] UsuarioRegistroDTO dto)
+        {
+            var result = await _authService.RegistrarAsync(dto);
+            return Ok(result);
+        }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UsuarioLoginDto dto)
+        {
+            var result = await _authService.LoginAsync(dto);
+            if (result == null) return Unauthorized("Credenciales inválidas");
+            return Ok(result);
         }
     }
 }

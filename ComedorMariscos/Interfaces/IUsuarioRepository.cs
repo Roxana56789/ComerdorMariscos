@@ -1,6 +1,12 @@
-﻿namespace ComedorMariscos.Interfaces
+﻿using ComedorMariscos.DTOs.UsuarioDTOs;
+using ComedorMariscos.Entidades;
+
+namespace ComedorMariscos.Interfaces
 {
-    public class IUsuarioRepository
+    public interface IUsuarioRepository
     {
+        Task<Usuario?> GetByEmailAsync(string email);
+        Task<Usuario> AddAsync(Usuario usuario);
+        Task<List<UsuarioListadoDto>> GetAllUsuariosAsync();
     }
 }
