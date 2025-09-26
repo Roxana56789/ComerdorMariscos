@@ -1,6 +1,4 @@
-﻿using AuthApi.DTOs.UsuarioDTOs;
-using AuthApi.Interfaces;
-using ComedorMariscos.DTOs.UsuarioDTOs;
+﻿using ComedorMariscos.DTOs.UsuarioDTOs;
 using ComedorMariscos.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +22,7 @@ namespace AuthApi.Controllers
             return Ok(result);
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UsuarioLoginDto dto)
+        public async Task<IActionResult> Login([FromBody] UsuarioLoginDTO dto)
         {
             var result = await _authService.LoginAsync(dto);
             if (result == null) return Unauthorized("Credenciales inválidas");

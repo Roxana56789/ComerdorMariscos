@@ -1,11 +1,11 @@
-﻿using ComedorMariscos.Data;
-using ComedorMariscos.DTOs.UsuarioDTOs;
+﻿using ComedorMariscos.DTOs.UsuarioDTOs;
 using ComedorMariscos.Entidades;
 using ComedorMariscos.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ComedorMariscos.Repositorios
 {
-    {
+    
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly AppDbContext _context;
@@ -19,6 +19,7 @@ namespace ComedorMariscos.Repositorios
         {
             return await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Email == email);
         }
+
 
         public async Task<Usuario> AddAsync(Usuario usuario)
         {
@@ -50,4 +51,4 @@ namespace ComedorMariscos.Repositorios
     }
 
 }
-}
+

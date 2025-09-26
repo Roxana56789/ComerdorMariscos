@@ -1,6 +1,6 @@
 ﻿namespace ComedorMariscos.DTOs.UsuarioDTOs
 {
-    {
+    
     public class UsuarioListadoDTO
     {
         public int Id { get; set; }

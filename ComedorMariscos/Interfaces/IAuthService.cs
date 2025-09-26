@@ -1,11 +1,14 @@
 ﻿using ComedorMariscos.DTOs.UsuarioDTOs;
 
-namespace AuthApi.Interfaces
+namespace ComedorMariscos.Interfaces
 {
-    public interface IAuthService
-    {
-        Task<UsuarioRespuestaDTO> RegistrarAsync(UsuarioRegistroDTO dto);
-        Task<UsuarioRespuestaDTO?> LoginAsync(UsuarioLoginDTO dto);
-    }
+    
+    
+        public interface IAuthService
+        {
+            Task<UsuarioRespuestaDTO> RegistrarAsync(UsuarioRegistroDTO dto);
+            Task<UsuarioRespuestaDTO?> LoginAsync(UsuarioLoginDTO dto);
+        }
+    
 }
 

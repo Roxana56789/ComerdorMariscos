@@ -1,9 +1,8 @@
-﻿using AuthApi.Interfaces;
-using ComedorMariscos.Interfaces;
+﻿using ComedorMariscos.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuthApi.Controllers
+namespace ComedorMariscos.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
