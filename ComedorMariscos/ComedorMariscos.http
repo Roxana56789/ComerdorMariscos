@@ -1,0 +1,6 @@
+@ComedorMariscos_HostAddress = http://localhost:5186
+
+GET {{ComedorMariscos_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
