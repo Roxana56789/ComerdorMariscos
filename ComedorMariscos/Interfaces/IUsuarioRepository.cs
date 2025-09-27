@@ -5,8 +5,8 @@ namespace ComedorMariscos.Interfaces
 {
     public interface IUsuarioRepository
     {
-        Task<Usuario?> GetByEmailAsync(string email);
-        Task<Usuario> AddAsync(Usuario usuario);
+        Task<usuario?> GetByEmailAsync(string email);
+        Task<usuario> AddAsync(usuario usuario);
         Task<List<UsuarioListadoDTO>> GetAllUsuariosAsync();
     }
 }

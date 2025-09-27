@@ -1,6 +1,6 @@
 ﻿namespace ComedorMariscos.Entidades
 {
-    public class Usuario
+    public class usuario
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = "";

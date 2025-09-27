@@ -21,7 +21,7 @@ namespace ComedorMariscos.Repositorios
         public async Task<UsuarioRespuestaDTO> RegistrarAsync(UsuarioRegistroDTO dto)
         {
             // Crear el usuario con RolId
-            var usuario = new Usuario
+            var usuario = new usuario
             {
                 Nombre = dto.Nombre,
                 Email = dto.Email,
@@ -65,7 +65,7 @@ namespace ComedorMariscos.Repositorios
                 Token = GenerarToken(usuario)
             };
         }
-        private string GenerarToken(Usuario usuario)
+        private string GenerarToken(usuario usuario)
         {
             // Validar que el usuario y su rol no sean nulos
             if (usuario == null) throw new ArgumentNullException(nameof(usuario));

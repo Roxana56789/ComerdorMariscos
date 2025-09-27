@@ -15,22 +15,22 @@ namespace ComedorMariscos.Repositorios
             _context = context;
         }
 
-        public async Task<Usuario?> GetByEmailAsync(string email)
+        public async Task<usuario?> GetByEmailAsync(string email)
         {
-            return await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Email == email);
         }
 
 
-        public async Task<Usuario> AddAsync(Usuario usuario)
+        public async Task<usuario> AddAsync(usuario Usuario)
         {
-            _context.Usuarios.Add(usuario);
+            _context.usuarios.Add(Usuario);
             await _context.SaveChangesAsync();
-            return usuario;
+            return Usuario;
         }
 
         public async Task<List<UsuarioListadoDTO>> GetAllUsuariosAsync()
         {
-            var usuarios = await _context.Usuarios
+            var usuarios = await _context.usuarios
                 .Include(u => u.Rol)
                 .ToListAsync();
 
