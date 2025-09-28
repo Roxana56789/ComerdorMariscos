@@ -24,7 +24,8 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAuthService, AuthRepository>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<CategoriaService>();
-
+builder.Services.AddScoped<IPlatilloRepository, PlatilloRepository>();
+builder.Services.AddScoped<PlatilloService>();
 // JWT
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>

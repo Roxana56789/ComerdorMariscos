@@ -5,42 +5,36 @@ namespace ComedorMariscos.Repositorios
 {
     public class AppDbContext : DbContext
     {
-        internal object Categoria;
+        internal object Platillo;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<usuario> usuarios { get; set; }
+        // --- DbSets ---
+        public DbSet<usuario> Usuarios { get; set; }
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Platillo> Platillos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // --- CORRECCIONES DE MAPEO (CASE SENSITIVITY) ---
-
-            // FIX 1: Mapeo de la entidad 'usuario' a la tabla 'usuarios' (minúsculas)
+            // --- Mapear tablas (case-sensitive) ---
             modelBuilder.Entity<usuario>().ToTable("usuarios");
-
-            // 🚨 FIX FINAL: Mapeo de la entidad 'Rol' a la tabla 'roles' (minúsculas) 🚨
             modelBuilder.Entity<Rol>().ToTable("roles");
+            modelBuilder.Entity<Categoria>().ToTable("categorias");
+            modelBuilder.Entity<Platillo>().ToTable("platillos");
 
-            // 🚨 FIX FINAL: Mapeo de la entidad 'Rol' a la tabla 'roles' (minúsculas) 🚨
-            modelBuilder.Entity<Categoria>().ToTable("categoria");
-
-            // --- RESTO DE CONFIGURACIONES ---
-
-            // FIX 2: Mapeo de la columna de contraseña
+            // --- Propiedades ---
+            // Mapear PasswordHash a columna 'Password'
             modelBuilder.Entity<usuario>()
                 .Property(u => u.PasswordHash)
                 .HasColumnName("Password");
 
-            // Índice Único (Email)
+            // Índice único para Email
             modelBuilder.Entity<usuario>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-            // Relación de Clave Foránea
+            // --- Relaciones ---
             modelBuilder.Entity<usuario>()
                 .HasOne(u => u.Rol)
                 .WithMany(r => r.usuarios)
