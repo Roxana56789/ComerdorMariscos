@@ -5,12 +5,15 @@ namespace ComedorMariscos.Repositorios
 {
     public class AppDbContext : DbContext
     {
+        internal object Categoria;
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
         public DbSet<usuario> usuarios { get; set; }
         public DbSet<Rol> Roles { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +24,9 @@ namespace ComedorMariscos.Repositorios
 
             // 🚨 FIX FINAL: Mapeo de la entidad 'Rol' a la tabla 'roles' (minúsculas) 🚨
             modelBuilder.Entity<Rol>().ToTable("roles");
+
+            // 🚨 FIX FINAL: Mapeo de la entidad 'Rol' a la tabla 'roles' (minúsculas) 🚨
+            modelBuilder.Entity<Categoria>().ToTable("categoria");
 
             // --- RESTO DE CONFIGURACIONES ---
 

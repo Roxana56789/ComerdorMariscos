@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ComedorMariscos.Interfaces;
+using ComedorMariscos.Repositorios;
+using ComedorMariscos.Servicios;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
-using ComedorMariscos.Interfaces;
-using ComedorMariscos.Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
 // Inyección de dependencias
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAuthService, AuthRepository>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddScoped<CategoriaService>();
 
 // JWT
 builder.Services.AddAuthentication("Bearer")
