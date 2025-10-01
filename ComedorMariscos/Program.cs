@@ -1,5 +1,6 @@
 ﻿using ComedorMariscos.Interfaces;
 using ComedorMariscos.Repositorios;
+using ComedorMariscos.Repositorios.DTOs;
 using ComedorMariscos.Servicios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,12 @@ builder.Services.AddAuthentication("Bearer")
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -88,6 +95,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
 
 // Estos dos middlewares son cruciales para la autenticación y autorización
 app.UseAuthentication();

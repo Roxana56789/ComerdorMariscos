@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace ComedorMariscos.Repositorios
+namespace ComedorMariscos.Repositorios.DTOs
 {
     public class AuthRepository : IAuthService
     {
