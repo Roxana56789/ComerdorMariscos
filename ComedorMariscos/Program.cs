@@ -23,10 +23,12 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
 // Inyección de dependencias
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAuthService, AuthRepository>();
+
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-builder.Services.AddScoped<CategoriaService>();
+
 builder.Services.AddScoped<IPlatilloRepository, PlatilloRepository>();
-builder.Services.AddScoped<PlatilloService>();
+builder.Services.AddScoped<IPlatilloService, PlatilloService>();
 // JWT
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>

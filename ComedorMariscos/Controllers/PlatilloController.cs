@@ -1,5 +1,6 @@
 ﻿using ComedorMariscos.DTOs;
 using ComedorMariscos.DTOs.PlatilloDTOs;
+using ComedorMariscos.Interfaces;
 using ComedorMariscos.Servicios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,61 +9,43 @@ namespace ComedorMariscos.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // 🔒 protege todos los endpoints
+   
     public class PlatilloController : ControllerBase
     {
-        private readonly PlatilloService _service;
-
-        // ✅ Constructor que inyecta el servicio
-        public PlatilloController(PlatilloService service)
+        private readonly IPlatilloService _service;
+        public PlatilloController(IPlatilloService service)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _service = service;
         }
-
-        // GET: api/Platillo
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PlatilloDTO>>> GetAll()
+        public async Task<IActionResult> GetAll()
+           => Ok(await _service.GetAllAsync());
+
+        [HttpGet("{Id_Platillo:int}")]
+        public async Task<IActionResult> GetById(int Id_Platillo)
         {
-            var platillos = await _service.GetAllAsync();
-            return Ok(platillos);
+            var item = await _service.GetByIdAsync(Id_Platillo);
+            return item is null ? NotFound() : Ok(item);
         }
 
-        // GET: api/Platillo/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PlatilloDTO>> GetById(int id)
-        {
-            var platillo = await _service.GetByIdAsync(id);
-            if (platillo == null) return NotFound();
-
-            return Ok(platillo);
-        }
-
-        // POST: api/Platillo
         [HttpPost]
-        public async Task<ActionResult<PlatilloDTO>> Create(PlatilloCreateDTO dto)
+        public async Task<IActionResult> Create([FromBody] PlatilloCreateDTO dto)
         {
-            var nuevoPlatillo = await _service.AddAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = nuevoPlatillo.Id }, nuevoPlatillo);
+            var created = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { Id_Platillo = created.Id }, created);
+        }
+        [HttpPut("{Id_Platillo}")]
+        public async Task<IActionResult> Update(int Id_Platillo, [FromBody] PlatilloActualizarDTO dto)
+        {
+            var ok = await _service.UpdateAsync(Id_Platillo, dto);
+            return ok ? NoContent() : NotFound();
         }
 
-        // PUT: api/Platillo/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, PlatilloCreateDTO dto)
+        [HttpDelete("{Id_Platillo:int}")]
+        public async Task<IActionResult> Delete(int Id_Platillo)
         {
-            var actualizado = await _service.UpdateAsync(id, dto);
-            if (!actualizado) return NotFound();
-
-            return NoContent();
-        }
-
-        // DELETE: api/Platillo/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var eliminado = await _service.DeleteAsync(id);
-            if (!eliminado) return NotFound();
-
-            return NoContent();
+            var ok = await _service.DeleteAsync(Id_Platillo);
+            return ok ? NoContent() : NotFound();
         }
     }
 }

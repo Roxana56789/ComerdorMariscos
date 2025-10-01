@@ -3,66 +3,46 @@ using Microsoft.AspNetCore.Mvc;
 using ComedorMariscos.DTOs;
 using ComedorMariscos.Interfaces;
 using ComedorMariscos.Servicios;
+using ComedorMariscos.DTOs.CategoriaDTOs;
 
 namespace ComedorMariscos.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // 🔒 protege todos los endpoints
+     // 🔒 protege todos los endpoints
     public class CategoriaController : ControllerBase
     {
-        private readonly CategoriaService _service;
-
-        // ✅ Constructor que inyecta el servicio
-        public CategoriaController(CategoriaService service)
+        private readonly ICategoriaService _service;
+        public CategoriaController(ICategoriaService service)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _service = service;
         }
-
-        // GET: api/CategoriaRJ
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoriaDTO>>> GetAll()
+        public async Task<IActionResult> GetAll()
+           => Ok(await _service.GetAllAsync());
+        [HttpGet("{Id_Categoria:int}")]
+        public async Task<IActionResult> GetById(int Id_Categoria)
         {
-            var categorias = await _service.GetAllAsync();
-            return Ok(categorias);
+            var item = await _service.GetByIdAsync(Id_Categoria);
+            return item is null ? NotFound() : Ok(item);
         }
-
-        // GET: api/CategoriaRJ/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CategoriaDTO>> GetById(int id)
-        {
-            var categoria = await _service.GetByIdAsync(id);
-            if (categoria == null) return NotFound();
-
-            return Ok(categoria);
-        }
-
-        // POST: api/CategoriaRJ
         [HttpPost]
-        public async Task<ActionResult<CategoriaDTO>> Create(CategoriaCreateDTO dto)
+        public async Task<IActionResult> Create([FromBody] CategoriaCreateDTO dto)
         {
-            var nuevaCategoria = await _service.AddAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = nuevaCategoria.Id }, nuevaCategoria);
+            var created = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { Id_Categoria = created.Id }, created);
         }
-
-        // PUT: api/CategoriaRJ/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, CategoriaCreateDTO dto)
+        [HttpPut("{Id_Categoria}")]
+        public async Task<IActionResult> Update(int Id_Categoria, [FromBody] CategoriaActualizarDTO dto)
         {
-            var actualizado = await _service.UpdateAsync(id, dto);
-            if (!actualizado) return NotFound();
-
-            return NoContent();
+            var ok = await _service.UpdateAsync(Id_Categoria, dto);
+            return ok ? NoContent() : NotFound();
         }
-
-        // DELETE: api/Categoria/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{Id_Categoria:int}")]
+        public async Task<IActionResult> Delete(int Id_Categoria)
         {
-            var eliminado = await _service.DeleteAsync(id);
-            if (!eliminado) return NotFound();
-
-            return NoContent();
+            var ok = await _service.DeleteAsync(Id_Categoria);
+            return ok ? NoContent() : NotFound();
         }
     }
 }

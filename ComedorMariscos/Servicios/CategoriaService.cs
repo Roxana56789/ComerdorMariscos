@@ -1,79 +1,48 @@
 ﻿using ComedorMariscos.DTOs;
+using ComedorMariscos.DTOs.CategoriaDTOs;
 using ComedorMariscos.Entidades;
 using ComedorMariscos.Interfaces;
 
 namespace ComedorMariscos.Servicios
 {
-    public class CategoriaService
+    public class CategoriaService :ICategoriaService
     {
-        private readonly ICategoriaRepository _repository;
-
-        public CategoriaService(ICategoriaRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<IEnumerable<CategoriaDTO>> GetAllAsync()
-        {
-            var categorias = await _repository.GetAllAsync();
-            return categorias.Select(c => new CategoriaDTO
+        private readonly ICategoriaRepository _repo;
+        public CategoriaService(ICategoriaRepository repo) => _repo = repo;
+        public async Task<List<CategoriaRespuestaDTO>> GetAllAsync() =>
+            (await _repo.GetAllAsync()).Select(x => new CategoriaRespuestaDTO
             {
-                Id = c.Id,
-                Nombre = c.Nombre,
-                Descripcion = c.Descripcion
-            });
-        }
-
-        public async Task<CategoriaDTO?> GetByIdAsync(int id)
+                Id = x.Id,
+                Nombre = x.Nombre,
+                Descripcion = x.Descripcion
+            }).ToList();
+        public async Task<CategoriaRespuestaDTO?> GetByIdAsync(int id)
         {
-            var categoria = await _repository.GetByIdAsync(id);
-            if (categoria == null) return null;
-
-            return new CategoriaDTO
+            var x = await _repo.GetByIdAsync(id);
+            return x == null ? null : new CategoriaRespuestaDTO
             {
-                Id = categoria.Id,
-                Nombre = categoria.Nombre,
-                Descripcion = categoria.Descripcion
+                Id = x.Id,
+                Nombre = x.Nombre,
+                Descripcion = x.Descripcion
             };
         }
-
-        public async Task<CategoriaDTO> AddAsync(CategoriaCreateDTO dto)
+        public async Task<CategoriaRespuestaDTO> CreateAsync(CategoriaCreateDTO dto)
         {
-            var categoria = new Categoria
-            {
-                Nombre = dto.Nombre,
-                Descripcion = dto.Descripcion
-            };
-
-            await _repository.AddAsync(categoria);
-
-            return new CategoriaDTO
-            {
-                Id = categoria.Id,
-                Nombre = categoria.Nombre,
-                Descripcion = categoria.Descripcion
-            };
+            var entity = new Categoria { Nombre = dto.Nombre.Trim(), Descripcion = dto.Descripcion.Trim() };
+            var saved = await _repo.AddAsync(entity);
+            return new CategoriaRespuestaDTO { Id = saved.Id, Nombre = saved.Nombre, Descripcion = saved.Descripcion };
         }
 
-        public async Task<bool> UpdateAsync(int id, CategoriaCreateDTO dto)
+        public async Task<bool> UpdateAsync(int Id_Categoria, CategoriaActualizarDTO dto)
         {
-            var categoria = await _repository.GetByIdAsync(id);
-            if (categoria == null) return false;
-
-            categoria.Nombre = dto.Nombre;
-            categoria.Descripcion = dto.Descripcion;
-
-            await _repository.UpdateAsync(categoria);
-            return true;
+            var current = await _repo.GetByIdAsync(Id_Categoria);
+            if (current == null) return false;
+            current.Nombre = dto.Nombre.Trim();
+            current.Descripcion = dto.Descripcion.Trim();
+            return await _repo.UpdateAsync(current);
         }
 
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var categoria = await _repository.GetByIdAsync(id);
-            if (categoria == null) return false;
-
-            await _repository.DeleteAsync(id);
-            return true;
-        }
+        public Task<bool> DeleteAsync(int Id_Categoria) => _repo.DeleteAsync(Id_Categoria);
+    
     }
 }

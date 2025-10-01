@@ -5,88 +5,51 @@ using ComedorMariscos.Interfaces;
 
 namespace ComedorMariscos.Servicios
 {
-    public class PlatilloService
+    public class PlatilloService :IPlatilloService
     {
-        private readonly IPlatilloRepository _repository;
-
-        public PlatilloService(IPlatilloRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<IEnumerable<PlatilloDTO>> GetAllAsync()
-        {
-            var platillos = await _repository.GetAllAsync();
-            return platillos.Select(p => new PlatilloDTO
+        private readonly IPlatilloRepository _repo;
+        public PlatilloService(IPlatilloRepository repo) => _repo = repo;
+        public async Task<List<PlatilloRespuestaDTO>> GetAllAsync() =>
+            (await _repo.GetAllAsync()).Select(x => new PlatilloRespuestaDTO
             {
-                Id = p.Id,
-                Nombre = p.Nombre,
-                Descripcion = p.Descripcion,
-                Precio = p.Precio,
-                CategoriaId = p.CategoriaId,
-                CategoriaNombre = p.Categoria != null ? p.Categoria.Nombre : null
-            });
-        }
-
-        public async Task<PlatilloDTO?> GetByIdAsync(int id)
+                Id = x.Id,
+                Nombre = x.Nombre,
+                Descripcion = x.Descripcion,
+                Precio = x.Precio,
+                CategoriaId = x.CategoriaId,
+            }).ToList();
+        public async Task<PlatilloRespuestaDTO?> GetByIdAsync(int id)
         {
-            var platillo = await _repository.GetByIdAsync(id);
-            if (platillo == null) return null;
-
-            return new PlatilloDTO
+            var x = await _repo.GetByIdAsync(id);
+            return x == null ? null : new PlatilloRespuestaDTO
             {
-                Id = platillo.Id,
-                Nombre = platillo.Nombre,
-                Descripcion = platillo.Descripcion,
-                Precio = platillo.Precio,
-                CategoriaId = platillo.CategoriaId,
-                CategoriaNombre = platillo.Categoria != null ? platillo.Categoria.Nombre : null
+                Id = x.Id,
+                Nombre = x.Nombre,
+                Descripcion = x.Descripcion,
+                Precio = x.Precio,
+                CategoriaId = x.CategoriaId,
             };
         }
-
-        public async Task<PlatilloDTO> AddAsync(PlatilloCreateDTO dto)
+        public async Task<PlatilloRespuestaDTO> CreateAsync(PlatilloCreateDTO dto)
         {
-            var platillo = new Platillo
-            {
-                Nombre = dto.Nombre,
-                Descripcion = dto.Descripcion,
-                Precio = dto.Precio,
-                CategoriaId = dto.CategoriaId
-            };
-
-            await _repository.AddAsync(platillo);
-
-            return new PlatilloDTO
-            {
-                Id = platillo.Id,
-                Nombre = platillo.Nombre,
-                Descripcion = platillo.Descripcion,
-                Precio = platillo.Precio,
-                CategoriaId = platillo.CategoriaId
-            };
+            var entity = new Platillo { Nombre = dto.Nombre.Trim(), Descripcion = dto.Descripcion.Trim(), Precio = dto.Precio, CategoriaId = dto.CategoriaId };
+            var saved = await _repo.AddAsync(entity);
+            return new PlatilloRespuestaDTO { Id = saved.Id, Nombre = saved.Nombre, Descripcion = saved.Descripcion, Precio = saved.Precio, CategoriaId = saved.CategoriaId };
         }
 
-        public async Task<bool> UpdateAsync(int id, PlatilloCreateDTO dto)
+        public async Task<bool> UpdateAsync(int Id_Platillo, PlatilloActualizarDTO dto)
         {
-            var platillo = await _repository.GetByIdAsync(id);
-            if (platillo == null) return false;
+            var current = await _repo.GetByIdAsync(Id_Platillo);
+            if (current == null) return false;
+            current.Nombre = dto.Nombre.Trim();
+            current.Descripcion = dto.Descripcion.Trim();
+            current.Precio = dto.Precio;
+            current.CategoriaId = dto.CategoriaId;
 
-            platillo.Nombre = dto.Nombre;
-            platillo.Descripcion = dto.Descripcion;
-            platillo.Precio = dto.Precio;
-            platillo.CategoriaId = dto.CategoriaId;
 
-            await _repository.UpdateAsync(platillo);
-            return true;
+            return await _repo.UpdateAsync(current);
         }
 
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var platillo = await _repository.GetByIdAsync(id);
-            if (platillo == null) return false;
-
-            await _repository.DeleteAsync(id);
-            return true;
-        }
+        public Task<bool> DeleteAsync(int Id_Platillo) => _repo.DeleteAsync(Id_Platillo);
     }
 }

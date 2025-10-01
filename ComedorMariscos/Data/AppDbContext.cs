@@ -20,14 +20,14 @@ namespace ComedorMariscos.Repositorios
             // --- Mapear tablas (case-sensitive) ---
             modelBuilder.Entity<usuario>().ToTable("usuarios");
             modelBuilder.Entity<Rol>().ToTable("roles");
-            modelBuilder.Entity<Categoria>().ToTable("categorias");
+            modelBuilder.Entity<Categoria>().ToTable("categoria");
             modelBuilder.Entity<Platillo>().ToTable("platillos");
 
             // --- Propiedades ---
             // Mapear PasswordHash a columna 'Password'
             modelBuilder.Entity<usuario>()
                 .Property(u => u.PasswordHash)
-                .HasColumnName("Password");
+                .HasColumnName("PasswordHash");
 
             // Índice único para Email
             modelBuilder.Entity<usuario>()
@@ -41,6 +41,11 @@ namespace ComedorMariscos.Repositorios
                 .HasForeignKey(u => u.RolId);
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Platillo>()
+            .HasOne(p => p.Categoria)     // Un Platillo tiene una Categoria
+            .WithMany(c => c.Platillos)   // Una Categoria tiene muchos Platillos
+            .HasForeignKey(p => p.CategoriaId);
         }
     }
 }
