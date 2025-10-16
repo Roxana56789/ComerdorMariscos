@@ -90,7 +90,7 @@ namespace ComedorMariscos.UnitTest.AppxUnit
 
             // Assert
             Assert.NotEmpty(lista);
-            Assert.Contains(lista, u => u.Email == "Comedor@test.com");
+            Assert.Contains(lista, u => u.Email == "Roxana@test.com");
         }
     }
 }
