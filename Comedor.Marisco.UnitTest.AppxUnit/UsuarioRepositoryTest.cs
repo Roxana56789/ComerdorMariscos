@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
-using ComedorMariscos.Data;        
+using System.Threading.Tasks;      
 using ComedorMariscos.Entidades;       
 using ComedorMariscos.Repositorios;    
-using Microsoft.EntityFrameworkCore;   
+using Microsoft.EntityFrameworkCore;
+
 using Xunit;                           
 
 namespace ComedorMariscos.UnitTest.AppxUnit
@@ -22,12 +22,12 @@ namespace ComedorMariscos.UnitTest.AppxUnit
             // Datos iniciales de prueba
             context.Roles.Add(new Rol { Id = 1, Nombre = "Admin" });
 
-            context.Usuarios.Add(new Usuario
+            context.Usuarios.Add(new usuario
             {
                 Id = 2,
                 Nombre = "Roxana",
                 Email = "Roxana@test.com",
-                Password = "123",
+                Passwordhast = "123",
                 RolId = 1
             });
 
@@ -60,11 +60,11 @@ namespace ComedorMariscos.UnitTest.AppxUnit
             var context = GetInMemoryDbContext();
             var repo = new UsuarioRepository(context);
 
-            var nuevoUsuario = new Usuario
+            var nuevoUsuario = new usuario
             {
                 Nombre = "Juan",
                 Email = "Juan@test.com",
-                Password = "456",
+                Passwordhast = "3456",
                 RolId = 1
             };
 
