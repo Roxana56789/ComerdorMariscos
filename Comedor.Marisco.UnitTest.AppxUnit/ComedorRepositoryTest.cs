@@ -1,5 +1,7 @@
-﻿using Comedor.Marisco.Entidades;
+﻿using Comedor.Marisco;
+using Comedor.Marisco.Entidades;
 using Comedor.Marisco.Repositorios;
+using ComedorMariscos.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -7,7 +9,7 @@ using Xunit;
 
 namespace Comedor.Marisco.UnitTest.AppxUnit
 {
-    public class ComedorRepositoryTest
+    public class ComedorRepositoryTest 
     {
         // 🔹 Crea un contexto de base de datos en memoria
         private ComedorDbContext GetInMemoryDbContext()
@@ -31,8 +33,8 @@ namespace Comedor.Marisco.UnitTest.AppxUnit
             {
                 Id = 2,
                 Nombre = "Pescado Frito",
-                Precio = 9.99,
-                Categoria = "Mariscos"
+                Precio = "9.99",
+                Categoria = "Mariscos",
             });
 
             context.SaveChanges();
@@ -65,8 +67,8 @@ namespace Comedor.Marisco.UnitTest.AppxUnit
             var nuevoPlatillo = new Platillo
             {
                 Nombre = "Filete de Pescado",
-                Precio = 10.5,
-                Categoria = "Pescados"
+                Precio = "10.5",
+                Categoria = "Pescados",
             };
 
             // Act
@@ -96,3 +98,4 @@ namespace Comedor.Marisco.UnitTest.AppxUnit
         }
     }
 }
+
