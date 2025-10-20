@@ -77,7 +77,7 @@ namespace ComedorMariscos.UnitTest.AppxUnit
             Assert.Equal("Juan", usuarioGuardado.Nombre);
         }
 
-        // ✅ PRUEBA 3: Obtener lista de usuarios
+      
         [Fact]
         public async Task GetAllUsuariosAsync_RetornarListaUsuarios()
         {

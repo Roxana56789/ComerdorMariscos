@@ -18,6 +18,6 @@ namespace ComedorMariscos.Entidades
         [Column("RolId")]
         public int RolId { get; set; }
         public Rol Rol { get; set; } = null!;
-        public string Passwordhast { get; set; }
+        
     }
 }
